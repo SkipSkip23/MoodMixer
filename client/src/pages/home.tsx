@@ -4,16 +4,7 @@ import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+
 import type { CocktailSuggestion, CocktailResponse, LimitReachedResponse } from "@shared/schema";
 import { adService } from "@/services/ads";
 import PremiumOfferModal from "@/components/PremiumOfferModal";
@@ -49,7 +40,7 @@ export default function Home() {
   const [availableAdBonus, setAvailableAdBonus] = useState<number>(0);
   const [watchedAd, setWatchedAd] = useState<boolean>(false);
   const [showPremiumOffer, setShowPremiumOffer] = useState<boolean>(false);
-  const [showAfterDarkConfirm, setShowAfterDarkConfirm] = useState<boolean>(false);
+
   const { toast } = useToast();
 
   // Generate or retrieve user ID and initialize ads
@@ -227,13 +218,7 @@ export default function Home() {
                 <Button
                   key={mood.id}
                   variant="outline"
-                  onClick={() => {
-                    if (mood.special) {
-                      setShowAfterDarkConfirm(true);
-                    } else {
-                      setSelectedMood(mood.id);
-                    }
-                  }}
+                  onClick={() => setSelectedMood(mood.id)}
                   className={`group relative p-4 h-auto rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg border ${
                     mood.special 
                       ? selectedMood === mood.id
@@ -247,11 +232,7 @@ export default function Home() {
                   <div className="text-center">
                     <div className="text-3xl mb-2">{mood.emoji}</div>
                     <span className="text-sm font-medium">{mood.name}</span>
-                    {mood.special && (
-                      <div className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full shadow-lg">
-                        21+
-                      </div>
-                    )}
+
                   </div>
                 </Button>
               ))}
@@ -527,35 +508,7 @@ export default function Home() {
         userId={userId}
       />
 
-      {/* After Dark Confirmation Dialog */}
-      <AlertDialog open={showAfterDarkConfirm} onOpenChange={setShowAfterDarkConfirm}>
-        <AlertDialogContent className="bg-slate-800 border-purple-500/50">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-cream flex items-center">
-              <span className="text-purple-400 mr-3">🌙</span>
-              Mixly After Dark
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-amber-100">
-              You're about to enter our adult-themed cocktail collection featuring provocative and suggestive drink names. 
-              This content is intended for mature audiences (21+) only.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter className="flex gap-3">
-            <AlertDialogCancel className="bg-slate-600 text-amber-100 hover:bg-slate-500 border-slate-500">
-              Cancel
-            </AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={() => {
-                setSelectedMood("afterdark");
-                setShowAfterDarkConfirm(false);
-              }}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-700 hover:to-pink-700"
-            >
-              I'm 21+ - Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+
     </div>
   );
 }
