@@ -8,6 +8,7 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
   limitReached?: boolean;
   message?: string;
   showPremiumOffer?: boolean;
+  availableAdBonus?: number;
 }> {
   try {
     let userUsage = await storage.getUserUsage(uid);
@@ -19,7 +20,7 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
         uid,
         requestCount: 0,
         lastReset: today,
-        watchedAd: false,
+        adsWatched: 0,
         isPremium: false,
         premiumExpiry: null,
         showPremiumOffer: false
@@ -38,30 +39,53 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
       userUsage = await storage.updateUserUsage(uid, {
         requestCount: 0,
         lastReset: today,
-        watchedAd: false
+        adsWatched: 0
       });
     }
     
-    // Check if user has reached the limit
-    if (userUsage.requestCount >= DAILY_LIMIT) {
-      // If user watched an ad, allow one more request
-      if (watchedAd && !userUsage.watchedAd) {
-        await storage.updateUserUsage(uid, { watchedAd: true });
-        return { canMakeRequest: true };
-      }
+    // Calculate effective limit based on ads watched
+    // Base: 3 requests
+    // First ad: +2 requests (total 5)
+    // Second ad: +1 request (total 6)
+    let effectiveLimit = DAILY_LIMIT;
+    if (userUsage.adsWatched >= 1) effectiveLimit += 2;
+    if (userUsage.adsWatched >= 2) effectiveLimit += 1;
+    
+    // If user just watched an ad, increment the counter and recalculate
+    if (watchedAd && userUsage.adsWatched < 2) {
+      const newAdsWatched = userUsage.adsWatched + 1;
+      await storage.updateUserUsage(uid, { adsWatched: newAdsWatched });
       
-      // Show premium offer only after user has watched a rewarded ad
-      const showPremiumOffer = userUsage.watchedAd && !userUsage.showPremiumOffer;
+      // Recalculate effective limit with new ad count
+      effectiveLimit = DAILY_LIMIT;
+      if (newAdsWatched >= 1) effectiveLimit += 2;
+      if (newAdsWatched >= 2) effectiveLimit += 1;
       
-      if (showPremiumOffer) {
-        await storage.updateUserUsage(uid, { showPremiumOffer: true });
+      return { canMakeRequest: true };
+    }
+    
+    // Check if user has reached their current limit
+    if (userUsage.requestCount >= effectiveLimit) {
+      // Determine what bonus is available
+      let availableAdBonus = 0;
+      let message = "";
+      
+      if (userUsage.adsWatched === 0) {
+        availableAdBonus = 2;
+        message = "You've hit your 3-drink limit for today. Watch an ad to unlock 2 more!";
+      } else if (userUsage.adsWatched === 1) {
+        availableAdBonus = 1;
+        message = "You've used your bonus drinks! Watch another ad to unlock 1 more.";
+      } else {
+        message = "You've reached your maximum daily limit. Upgrade to Premium for unlimited cocktails!";
       }
       
       return {
         canMakeRequest: false,
         limitReached: true,
-        showPremiumOffer,
-        message: "You've hit your 3-drink limit for today. Watch an ad to unlock more!"
+        showPremiumOffer: true, // Always show premium option when limit is reached
+        availableAdBonus,
+        message
       };
     }
     

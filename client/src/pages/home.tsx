@@ -34,6 +34,8 @@ export default function Home() {
   const [cocktailResult, setCocktailResult] = useState<CocktailResponse | null>(null);
   const [userId, setUserId] = useState<string>("");
   const [limitReached, setLimitReached] = useState<boolean>(false);
+  const [limitMessage, setLimitMessage] = useState<string>("");
+  const [availableAdBonus, setAvailableAdBonus] = useState<number>(0);
   const [watchedAd, setWatchedAd] = useState<boolean>(false);
   const [showPremiumOffer, setShowPremiumOffer] = useState<boolean>(false);
   const { toast } = useToast();
@@ -62,6 +64,8 @@ export default function Home() {
     onSuccess: (data: CocktailResponse | LimitReachedResponse) => {
       if ('limitReached' in data) {
         setLimitReached(true);
+        setLimitMessage(data.message);
+        setAvailableAdBonus(data.availableAdBonus || 0);
         if (data.showPremiumOffer) {
           setShowPremiumOffer(true);
         }
@@ -288,15 +292,28 @@ export default function Home() {
                 Daily Limit Reached
               </h3>
               <p className="text-lg text-amber-100 mb-6 max-w-md mx-auto">
-                You've enjoyed 3 cocktail suggestions today! Watch a short ad to unlock one more drink.
+                {limitMessage}
               </p>
-              <Button
-                onClick={handleWatchAd}
-                className="px-6 py-3 bg-gradient-to-r from-amber-warm to-gold-deep text-slate-900 font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                <span className="mr-2">📺</span>
-                Watch Ad for More
-              </Button>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                {availableAdBonus > 0 && (
+                  <Button
+                    onClick={handleWatchAd}
+                    className="px-6 py-3 bg-gradient-to-r from-amber-warm to-gold-deep text-slate-900 font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                  >
+                    <span className="mr-2">📺</span>
+                    Watch Ad for {availableAdBonus} More
+                  </Button>
+                )}
+                
+                <Button
+                  onClick={() => setShowPremiumOffer(true)}
+                  className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:shadow-lg transform hover:scale-105 transition-all duration-300"
+                >
+                  <span className="mr-2">⭐</span>
+                  Upgrade to Premium
+                </Button>
+              </div>
             </div>
           </Card>
         )}

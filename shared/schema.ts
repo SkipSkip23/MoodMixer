@@ -22,7 +22,7 @@ export const userUsage = pgTable("user_usage", {
   uid: text("uid").notNull(),
   requestCount: integer("request_count").notNull().default(0),
   lastReset: text("last_reset").notNull(), // ISO date string
-  watchedAd: boolean("watched_ad").notNull().default(false),
+  adsWatched: integer("ads_watched").notNull().default(0),
   isPremium: boolean("is_premium").notNull().default(false),
   premiumExpiry: timestamp("premium_expiry"),
   showPremiumOffer: boolean("show_premium_offer").notNull().default(false),
@@ -67,6 +67,7 @@ export const limitReachedResponseSchema = z.object({
   limitReached: z.literal(true),
   message: z.string(),
   showPremiumOffer: z.boolean().optional(),
+  availableAdBonus: z.number().optional(),
 });
 
 export type CocktailSuggestion = z.infer<typeof cocktailSuggestionSchema>;
