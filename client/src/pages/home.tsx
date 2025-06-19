@@ -18,7 +18,7 @@ const moods = [
   { id: "chill", name: "Chill", emoji: "😎" },
   { id: "adventurous", name: "Adventurous", emoji: "🔥" },
   { id: "professional", name: "Professional", emoji: "💼" },
-  { id: "afterdark", name: "After Dark", emoji: "🌙", special: true },
+  { id: "afterdark", name: "After Dark", emoji: "😈", special: true },
 ];
 
 const liquors = [
