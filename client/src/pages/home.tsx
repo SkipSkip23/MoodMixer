@@ -12,7 +12,7 @@ const moods = [
   { id: "energetic", name: "Energetic", emoji: "⚡" },
   { id: "relaxed", name: "Relaxed", emoji: "😌" },
   { id: "celebratory", name: "Celebratory", emoji: "🎉" },
-  { id: "thoughtful", name: "Thoughtful", emoji: "💭" },
+  { id: "chill", name: "Chill", emoji: "😎" },
   { id: "adventurous", name: "Adventurous", emoji: "🔥" },
   { id: "professional", name: "Professional", emoji: "💼" },
 ];
