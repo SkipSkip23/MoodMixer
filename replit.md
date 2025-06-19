@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application that provides personalized cocktail suggestions based on user mood and preferred liquor type. The app uses AI (OpenAI GPT-4o) to generate thoughtful cocktail recommendations with detailed recipes, ingredients, and presentation tips.
+This is a full-stack web application called "Mixly" that provides personalized cocktail suggestions based on user mood and preferred liquor type. The app uses AI (OpenAI GPT-4o) to generate thoughtful cocktail recommendations with detailed recipes, ingredients, and presentation tips. The app includes freemium features with usage limits, affiliate monetization, and ride-sharing integration for responsible drinking.
 
 ## System Architecture
 
@@ -31,22 +31,33 @@ This is a full-stack web application that provides personalized cocktail suggest
 ## Key Components
 
 ### Frontend Components
-1. **Home Page** (`client/src/pages/home.tsx`): Main interface for mood/liquor selection and cocktail display
+1. **Home Page** (`client/src/pages/home.tsx`): Main interface with mood/liquor selection, usage tracking, ad system, and ride-sharing integration
 2. **UI Components**: Comprehensive set of reusable components from Shadcn/ui
 3. **Query Client**: Centralized API request handling with error management
 4. **Toast System**: User feedback for success/error states
+5. **User Tracking**: Local storage-based user identification for usage limits
 
 ### Backend Services
 1. **OpenAI Service** (`server/services/openai.ts`): AI-powered cocktail suggestion generation
-2. **Routes** (`server/routes.ts`): API endpoint definitions
-3. **Storage Layer** (`server/storage.ts`): Database abstraction with in-memory fallback
-4. **Vite Integration** (`server/vite.ts`): Development server setup
+2. **Usage Service** (`server/services/usage.ts`): Daily usage limits and ad-watching logic
+3. **Affiliate Service** (`server/services/affiliate.ts`): Partner link generation for ingredients
+4. **Routes** (`server/routes.ts`): API endpoints including `/suggest`, `/health`, `/version`, and deep links
+5. **Storage Layer** (`server/storage.ts`): Database abstraction with user usage tracking
+6. **Vite Integration** (`server/vite.ts`): Development server setup
 
 ### Shared Schema
 - Type-safe schema definitions using Zod
-- Cocktail suggestion validation
-- User authentication schemas
-- Database table definitions
+- Cocktail suggestion validation with user ID and ad-watching flags
+- User authentication and usage tracking schemas
+- Database table definitions for users and usage limits
+- Affiliate link schema definitions
+
+### Mixly Features
+1. **Usage Limits**: 3 cocktail suggestions per day per user
+2. **Ad Monetization**: Watch-ad-to-unlock additional requests
+3. **Deep Links**: Uber and Lyft integration for responsible drinking
+4. **Affiliate Links**: Drizly, Amazon, and Total Wine partner integration ready
+5. **Analytics Ready**: Ad interaction tracking and user behavior monitoring
 
 ## Data Flow
 
@@ -100,6 +111,7 @@ This is a full-stack web application that provides personalized cocktail suggest
 
 Changelog:
 - June 19, 2025. Initial setup
+- June 19, 2025. Integrated Mixly features: usage limits (3 drinks/day), ad monetization support, deep links for Uber/Lyft, affiliate links for ingredients, user tracking with localStorage
 
 ## User Preferences
 

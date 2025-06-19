@@ -1,0 +1,53 @@
+Create a Node.js + Express API for an AI-powered cocktail app called "Mixly."
+
+Core functionality:
+
+1. POST `/suggest`
+   - Accepts JSON: `{ "mood": "Chill", "liquor": "Tequila", "uid": "abc123" }`
+   - Uses OpenAI GPT-4.1 (or gpt-4.1-mini if cheaper) to generate a drink suggestion.
+   - Responds with structured JSON like:
+     {
+       "drinkName": "Paloma",
+       "description": "A refreshing tequila-based cocktail...",
+       "ingredients": ["2 oz Tequila", "4 oz Grapefruit soda", "Lime juice"],
+       "garnish": "Lime wedge",
+       "emoji": "🍹"
+     }
+
+2. Usage limits (freemium logic)
+   - Track number of drinks requested per user per 24 hours using their `uid` (passed in the request)
+   - If the user exceeds 3 drinks/day:
+     - Return a response like:
+       {
+         "limitReached": true,
+         "message": "You've hit your 3-drink limit for today. Watch an ad to unlock more!"
+       }
+   - Optional: reset counter daily via timestamp
+
+3. Deep link support for Uber and Lyft
+   - Add helper functions to return prebuilt ride links:
+     - `/deeplink/uber?fallback=true`
+     - `/deeplink/lyft?fallback=true`
+   - If installed, link opens app directly
+   - If not, fallback to App Store / Play Store
+   - Include partner ID or affiliate parameter support if needed in future
+
+4. Ad monetization notes (frontend integration)
+   - Banner Ads: recommend using Google AdMob banner at bottom of screens
+   - Rewarded Ads: unlock additional drinks after watching
+     - Track whether user has watched ad (via flag passed in request)
+     - Add optional override in `/suggest` like `{ watchedAd: true }` to bypass limit
+
+5. Affiliate integration support
+   - Under each drink, optionally inject affiliate links based on liquor type or ingredient keywords
+     - Example: Add Drizly link if "Vodka" is used
+   - Future support for Amazon/Instacart links
+
+6. `/version` or `/health` endpoint for API checks
+
+7. Security
+   - Store OpenAI API key in `.env`
+   - Use `express.json()` and `cors()` middleware
+   - Add comments in code for easy frontend integration
+
+Run this on Replit, using Node.js + `openai`, `express`, and `cors` packages. Make the code modular and developer-friendly.

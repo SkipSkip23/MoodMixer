@@ -1,4 +1,4 @@
-import { users, type User, type InsertUser } from "@shared/schema";
+import { users, userUsage, type User, type InsertUser, type UserUsage, type InsertUserUsage } from "@shared/schema";
 
 // modify the interface with any CRUD methods
 // you might need
@@ -7,15 +7,22 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  getUserUsage(uid: string): Promise<UserUsage | undefined>;
+  createUserUsage(usage: InsertUserUsage): Promise<UserUsage>;
+  updateUserUsage(uid: string, updates: Partial<UserUsage>): Promise<UserUsage>;
 }
 
 export class MemStorage implements IStorage {
   private users: Map<number, User>;
-  currentId: number;
+  private userUsages: Map<string, UserUsage>;
+  private currentId: number;
+  private currentUsageId: number;
 
   constructor() {
     this.users = new Map();
+    this.userUsages = new Map();
     this.currentId = 1;
+    this.currentUsageId = 1;
   }
 
   async getUser(id: number): Promise<User | undefined> {
@@ -33,6 +40,33 @@ export class MemStorage implements IStorage {
     const user: User = { ...insertUser, id };
     this.users.set(id, user);
     return user;
+  }
+
+  async getUserUsage(uid: string): Promise<UserUsage | undefined> {
+    return this.userUsages.get(uid);
+  }
+
+  async createUserUsage(insertUsage: InsertUserUsage): Promise<UserUsage> {
+    const id = this.currentUsageId++;
+    const usage: UserUsage = { 
+      id,
+      uid: insertUsage.uid,
+      requestCount: insertUsage.requestCount ?? 0,
+      lastReset: insertUsage.lastReset,
+      watchedAd: insertUsage.watchedAd ?? false
+    };
+    this.userUsages.set(insertUsage.uid, usage);
+    return usage;
+  }
+
+  async updateUserUsage(uid: string, updates: Partial<UserUsage>): Promise<UserUsage> {
+    const existing = this.userUsages.get(uid);
+    if (!existing) {
+      throw new Error(`User usage not found for uid: ${uid}`);
+    }
+    const updated = { ...existing, ...updates };
+    this.userUsages.set(uid, updated);
+    return updated;
   }
 }
 
