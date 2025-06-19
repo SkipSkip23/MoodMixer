@@ -18,12 +18,12 @@ const moods = [
 ];
 
 const liquors = [
-  { id: "vodka", name: "Vodka" },
-  { id: "whiskey", name: "Whiskey" },
-  { id: "rum", name: "Rum" },
-  { id: "gin", name: "Gin" },
-  { id: "tequila", name: "Tequila" },
-  { id: "brandy", name: "Brandy" },
+  { id: "vodka", name: "Vodka", emoji: "🥃" },
+  { id: "whiskey", name: "Whiskey", emoji: "🥃" },
+  { id: "rum", name: "Rum", emoji: "🍹" },
+  { id: "gin", name: "Gin", emoji: "🍸" },
+  { id: "tequila", name: "Tequila", emoji: "🌵" },
+  { id: "brandy", name: "Brandy", emoji: "🍷" },
 ];
 
 export default function Home() {
@@ -133,11 +133,11 @@ export default function Home() {
           <div className="flex items-center justify-center mb-4">
             <span className="text-amber-warm text-4xl mr-3 animate-float">🍸</span>
             <h1 className="font-display text-5xl md:text-6xl font-bold text-cream">
-              Cocktail Mood
+              Mixly
             </h1>
           </div>
           <p className="text-xl text-amber-100 max-w-2xl mx-auto leading-relaxed">
-            Discover the perfect cocktail for your mood, crafted by AI and inspired by your taste
+            Discover the perfect cocktail for your mood and taste preferences
           </p>
         </div>
       </header>
@@ -193,8 +193,8 @@ export default function Home() {
                   }`}
                 >
                   <div className="text-center">
-                    <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-slate-600/50 flex items-center justify-center">
-                      🥃
+                    <div className="w-12 h-12 mx-auto mb-3 rounded-lg bg-slate-600/50 flex items-center justify-center text-2xl">
+                      {liquor.emoji}
                     </div>
                     <span className="text-sm font-medium">{liquor.name}</span>
                   </div>
@@ -208,17 +208,17 @@ export default function Home() {
             <Button
               onClick={handleGetSuggestion}
               disabled={suggestCocktailMutation.isPending}
-              className="group relative px-8 py-4 bg-gradient-to-r from-amber-warm to-gold-deep hover:from-gold-deep hover:to-copper text-slate-900 font-semibold text-lg rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-w-[200px]"
+              className="group relative px-8 py-4 bg-gradient-to-r from-gold-deep to-amber-warm hover:from-amber-warm hover:to-gold-deep text-blue-900 font-semibold text-lg rounded-2xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-w-[200px]"
             >
               {suggestCocktailMutation.isPending ? (
                 <div className="flex items-center justify-center">
-                  <div className="w-5 h-5 border-2 border-slate-900 border-t-transparent rounded-full animate-spin mr-3"></div>
+                  <div className="w-5 h-5 border-2 border-blue-900 border-t-transparent rounded-full animate-spin mr-3"></div>
                   Creating Magic...
                 </div>
               ) : (
                 <span className="flex items-center justify-center">
-                  <span className="mr-3 group-hover:animate-pulse">✨</span>
-                  Get My Cocktail
+                  <span className="mr-3 group-hover:animate-pulse">🍹</span>
+                  Mix My Cocktail
                 </span>
               )}
             </Button>
@@ -247,56 +247,54 @@ export default function Home() {
           </Card>
         )}
 
-        {/* Ride Share Section */}
-        {cocktailResult && (
-          <Card className="mt-8 bg-slate-800/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-amber-warm/20">
-            <div className="text-center mb-6">
-              <h3 className="font-display text-2xl font-semibold text-cream mb-2">
-                <span className="text-amber-warm mr-3">🚗</span>
-                Need a Safe Ride Home?
-              </h3>
-              <p className="text-amber-100">
-                Enjoy your cocktail responsibly. Get a ride when you need one.
-              </p>
-            </div>
+        {/* Ride Share Section - Always Visible */}
+        <Card className="mt-8 bg-slate-800/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-amber-warm/20">
+          <div className="text-center mb-6">
+            <h3 className="font-display text-2xl font-semibold text-cream mb-2">
+              <span className="text-amber-warm mr-3">🚗</span>
+              Need a Safe Ride Home?
+            </h3>
+            <p className="text-amber-100">
+              Enjoy your cocktail responsibly. Get a ride when you need one.
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <Button
+              onClick={async () => {
+                try {
+                  const res = await fetch("/api/deeplink/uber?fallback=true");
+                  const data = await res.json();
+                  window.open(data.deepLink, "_blank");
+                } catch (error) {
+                  window.open("https://m.uber.com/ul/", "_blank");
+                }
+              }}
+              variant="outline"
+              className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl"
+            >
+              <span className="mr-2">🚖</span>
+              Get Uber
+            </Button>
             
-            <div className="grid md:grid-cols-2 gap-4">
-              <Button
-                onClick={async () => {
-                  try {
-                    const res = await fetch("/api/deeplink/uber?fallback=true");
-                    const data = await res.json();
-                    window.open(data.deepLink, "_blank");
-                  } catch (error) {
-                    window.open("https://m.uber.com/ul/", "_blank");
-                  }
-                }}
-                variant="outline"
-                className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl"
-              >
-                <span className="mr-2">🚖</span>
-                Get Uber
-              </Button>
-              
-              <Button
-                onClick={async () => {
-                  try {
-                    const res = await fetch("/api/deeplink/lyft?fallback=true");
-                    const data = await res.json();
-                    window.open(data.deepLink, "_blank");
-                  } catch (error) {
-                    window.open("https://www.lyft.com/app", "_blank");
-                  }
-                }}
-                variant="outline"
-                className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl"
-              >
-                <span className="mr-2">🚗</span>
-                Get Lyft
-              </Button>
-            </div>
-          </Card>
-        )}
+            <Button
+              onClick={async () => {
+                try {
+                  const res = await fetch("/api/deeplink/lyft?fallback=true");
+                  const data = await res.json();
+                  window.open(data.deepLink, "_blank");
+                } catch (error) {
+                  window.open("https://www.lyft.com/app", "_blank");
+                }
+              }}
+              variant="outline"
+              className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl"
+            >
+              <span className="mr-2">🚗</span>
+              Get Lyft
+            </Button>
+          </div>
+        </Card>
 
         {/* Cocktail Result */}
         {cocktailResult && (
@@ -416,7 +414,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <p className="flex items-center justify-center mb-4">
             <span className="text-amber-warm mr-2">🍸</span>
-            Powered by AI • Crafted with care
+            Crafted with care • Perfect cocktails for every mood
           </p>
           <p className="text-sm">
             Drink responsibly. Must be 21+ to consume alcohol.
