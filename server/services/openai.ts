@@ -34,6 +34,7 @@ For mood matching:
 - Chill: Refreshing, cooling, laid-back drinks
 - Adventurous: Bold, unusual, complex flavor profiles
 - Professional: Sophisticated, classic, refined cocktails
+- After Dark: Provocative, sensual, adult-themed cocktails with suggestive names (Sex on the Beach, Sloe Comfortable Screw, Screaming Orgasm, Between the Sheets, Leg Spreader, Slow Comfortable Screw, Redheaded Slut, Slippery Nipple, Buttery Nipple, Blow Job, etc.)
 
 Respond ONLY with JSON in this exact format:
 {

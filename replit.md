@@ -115,6 +115,7 @@ Changelog:
 - June 19, 2025. Added comprehensive ad revenue system: Google AdMob integration with banner ads, rewarded video ads, and interstitial ads. Set up Capacitor for native iOS/Android app store distribution with proper ad monetization ready for production deployment.
 - June 19, 2025. Fixed affiliate link display to show clean ingredient names (e.g., "Order Tequila" instead of "Order 2 oz Tequila"). Set Total Wine as primary partner for ingredient purchases.
 - June 19, 2025. Implemented graduated ad bonus system: Base 3 requests + 2 more after 1st ad + 1 more after 2nd ad. Premium upgrade offers shown at every limit stage for maximum conversion.
+- June 19, 2025. Added "Mixly After Dark" mode with provocative cocktail names, age verification dialog, and special purple/pink styling for adult-themed content (21+).
 
 ## User Preferences
 
