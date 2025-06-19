@@ -19,7 +19,7 @@ const moods = [
 
 const liquors = [
   { id: "vodka", name: "Vodka", emoji: "🍸" },
-  { id: "whiskey", name: "Whiskey", emoji: "🥃" },
+  { id: "whiskey", name: "Whiskey", emoji: "🥛" },
   { id: "rum", name: "Rum", emoji: "🍹" },
   { id: "gin", name: "Gin", emoji: "🍸" },
   { id: "tequila", name: "Tequila", emoji: "🌵" },
