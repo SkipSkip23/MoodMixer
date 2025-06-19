@@ -14,6 +14,11 @@ const config: CapacitorConfig = {
       androidSplashResourceName: 'splash',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false
+    },
+    AdMob: {
+      appId: 'ca-app-pub-3940256099942544~3347511713', // Replace with your actual App ID
+      requestTrackingAuthorization: true,
+      testingDevices: ['YOUR_TESTING_DEVICE_ID']
     }
   }
 };

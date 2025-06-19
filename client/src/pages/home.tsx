@@ -5,6 +5,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { CocktailSuggestion, CocktailResponse, LimitReachedResponse } from "@shared/schema";
+import { adService } from "@/services/ads";
 
 const moods = [
   { id: "happy", name: "Happy", emoji: "😊" },
@@ -35,7 +36,7 @@ export default function Home() {
   const [watchedAd, setWatchedAd] = useState<boolean>(false);
   const { toast } = useToast();
 
-  // Generate or retrieve user ID
+  // Generate or retrieve user ID and initialize ads
   useEffect(() => {
     let uid = localStorage.getItem("mixly_user_id");
     if (!uid) {
@@ -43,6 +44,12 @@ export default function Home() {
       localStorage.setItem("mixly_user_id", uid);
     }
     setUserId(uid);
+
+    // Initialize ad service
+    adService.initialize().then(() => {
+      // Show banner ad after initialization
+      adService.showBanner();
+    });
   }, []);
 
   const suggestCocktailMutation = useMutation({
@@ -61,6 +68,15 @@ export default function Home() {
       } else {
         setCocktailResult(data);
         setLimitReached(false);
+        
+        // Show interstitial ad after every 2nd successful request
+        const requestCount = parseInt(localStorage.getItem("mixly_request_count") || "0") + 1;
+        localStorage.setItem("mixly_request_count", requestCount.toString());
+        
+        if (requestCount % 2 === 0) {
+          adService.showInterstitial();
+        }
+        
         // Scroll to result
         setTimeout(() => {
           const resultElement = document.getElementById("cocktail-result");
@@ -106,14 +122,37 @@ export default function Home() {
     });
   };
 
-  const handleWatchAd = () => {
-    // Simulate watching an ad
-    setWatchedAd(true);
-    setLimitReached(false);
-    toast({
-      title: "Ad Watched!",
-      description: "You can now make one more cocktail request today.",
-    });
+  const handleWatchAd = async () => {
+    try {
+      // Initialize ads service
+      await adService.initialize();
+      
+      // Show rewarded ad
+      const adWatched = await adService.showRewardedAd();
+      
+      if (adWatched) {
+        setWatchedAd(true);
+        setLimitReached(false);
+        toast({
+          title: "Ad Watched!",
+          description: "You earned extra cocktail suggestions for today.",
+        });
+      } else {
+        toast({
+          title: "Ad Not Completed",
+          description: "Please watch the full ad to unlock more suggestions.",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      // Fallback for web or ad failure
+      setWatchedAd(true);
+      setLimitReached(false);
+      toast({
+        title: "Ad Watched!",
+        description: "You can now make one more cocktail request today.",
+      });
+    }
   };
 
   const handleTryAnother = () => {
