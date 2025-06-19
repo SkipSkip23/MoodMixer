@@ -362,10 +362,10 @@ export default function Home() {
                       key={index}
                       onClick={() => window.open(link.url, '_blank')}
                       variant="outline"
-                      className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl h-auto"
+                      className="p-4 bg-gradient-to-r from-slate-700 to-slate-600 hover:from-slate-600 hover:to-slate-500 text-amber-100 border-slate-600 hover:border-amber-warm/50 rounded-xl h-auto w-full"
                     >
-                      <div className="text-center">
-                        <div className="text-sm font-medium mb-1">{link.name}</div>
+                      <div className="text-center w-full">
+                        <div className="text-sm font-medium mb-1 break-words whitespace-normal leading-tight">{link.name}</div>
                         <div className="text-xs text-amber-100/70 capitalize">{link.type}</div>
                       </div>
                     </Button>
