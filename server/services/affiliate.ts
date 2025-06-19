@@ -23,45 +23,63 @@ const affiliatePartners = {
   }
 };
 
+// Helper function to clean ingredient names by removing quantities
+function cleanIngredientName(ingredient: string): string {
+  // Remove quantities like "2 oz", "1/2 cup", "3 dashes", "splash of", etc.
+  const cleaned = ingredient
+    .replace(/^\d+(\.\d+)?(\s)?(oz|ounces?|cup|cups?|tsp|teaspoons?|tbsp|tablespoons?|ml|dash|dashes?|splash|splashes?|drops?)\s+(of\s+)?/i, '')
+    .replace(/^(a\s+)?(splash\s+of\s+|dash\s+of\s+|few\s+drops\s+of\s+)/i, '')
+    .replace(/^\d+\/\d+\s+(oz|cup|tsp|tbsp)\s+(of\s+)?/i, '')
+    .trim();
+  
+  return cleaned || ingredient; // Return original if cleaning resulted in empty string
+}
+
 export function generateAffiliateLinks(ingredients: string[]): AffiliateLink[] {
   const links: AffiliateLink[] = [];
   
   ingredients.forEach(ingredient => {
-    const lowerIngredient = ingredient.toLowerCase();
+    const cleanedIngredient = cleanIngredientName(ingredient);
+    const lowerIngredient = cleanedIngredient.toLowerCase();
     
     // Extract liquor types for targeted affiliate links
     if (lowerIngredient.includes('vodka') || 
         lowerIngredient.includes('whiskey') || 
+        lowerIngredient.includes('whisky') || 
         lowerIngredient.includes('rum') || 
         lowerIngredient.includes('gin') || 
         lowerIngredient.includes('tequila') || 
-        lowerIngredient.includes('brandy')) {
+        lowerIngredient.includes('brandy') ||
+        lowerIngredient.includes('bourbon') ||
+        lowerIngredient.includes('scotch')) {
       
-      // Drizly link for liquor delivery
+      // Total Wine link for liquor (primary partner)
       links.push({
-        name: `Order ${ingredient} on Drizly`,
-        url: `${affiliatePartners.drizly.baseUrl}?q=${encodeURIComponent(ingredient)}&ref=${affiliatePartners.drizly.partnerId}`,
+        name: `Order ${cleanedIngredient}`,
+        url: `${affiliatePartners.totalwine.baseUrl}?text=${encodeURIComponent(cleanedIngredient)}&utm_source=${affiliatePartners.totalwine.partnerId}`,
         type: 'liquor'
       });
     }
     
     // Add Amazon link for bar equipment/accessories
-    if (lowerIngredient.includes('shaker') || 
+    else if (lowerIngredient.includes('shaker') || 
         lowerIngredient.includes('glass') || 
-        lowerIngredient.includes('strainer')) {
+        lowerIngredient.includes('strainer') ||
+        lowerIngredient.includes('jigger') ||
+        lowerIngredient.includes('muddler')) {
       
       links.push({
-        name: `Buy ${ingredient} on Amazon`,
-        url: `${affiliatePartners.amazon.baseUrl}?k=${encodeURIComponent(ingredient)}&tag=${affiliatePartners.amazon.partnerId}`,
+        name: `Buy ${cleanedIngredient}`,
+        url: `${affiliatePartners.amazon.baseUrl}?k=${encodeURIComponent(cleanedIngredient)}&tag=${affiliatePartners.amazon.partnerId}`,
         type: 'equipment'
       });
     }
     
-    // General ingredient search
-    if (!lowerIngredient.includes('oz') && !lowerIngredient.includes('splash')) {
+    // General ingredient search for mixers, syrups, etc.
+    else if (cleanedIngredient.length > 2) { // Avoid very short ingredient names
       links.push({
-        name: `Find ${ingredient} at Total Wine`,
-        url: `${affiliatePartners.totalwine.baseUrl}?text=${encodeURIComponent(ingredient)}&utm_source=${affiliatePartners.totalwine.partnerId}`,
+        name: `Find ${cleanedIngredient}`,
+        url: `${affiliatePartners.totalwine.baseUrl}?text=${encodeURIComponent(cleanedIngredient)}&utm_source=${affiliatePartners.totalwine.partnerId}`,
         type: 'ingredient'
       });
     }

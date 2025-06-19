@@ -113,6 +113,7 @@ Changelog:
 - June 19, 2025. Initial setup
 - June 19, 2025. Integrated Mixly features: usage limits (3 drinks/day), ad monetization support, deep links for Uber/Lyft, affiliate links for ingredients, user tracking with localStorage
 - June 19, 2025. Added comprehensive ad revenue system: Google AdMob integration with banner ads, rewarded video ads, and interstitial ads. Set up Capacitor for native iOS/Android app store distribution with proper ad monetization ready for production deployment.
+- June 19, 2025. Fixed affiliate link display to show clean ingredient names (e.g., "Order Tequila" instead of "Order 2 oz Tequila"). Set Total Wine as primary partner for ingredient purchases.
 
 ## User Preferences
 
