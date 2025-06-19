@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import type { CocktailSuggestion, CocktailResponse, LimitReachedResponse } from "@shared/schema";
 import { adService } from "@/services/ads";
+import PremiumOfferModal from "@/components/PremiumOfferModal";
 
 const moods = [
   { id: "happy", name: "Happy", emoji: "😊" },
@@ -34,6 +35,7 @@ export default function Home() {
   const [userId, setUserId] = useState<string>("");
   const [limitReached, setLimitReached] = useState<boolean>(false);
   const [watchedAd, setWatchedAd] = useState<boolean>(false);
+  const [showPremiumOffer, setShowPremiumOffer] = useState<boolean>(false);
   const { toast } = useToast();
 
   // Generate or retrieve user ID and initialize ads
@@ -60,6 +62,9 @@ export default function Home() {
     onSuccess: (data: CocktailResponse | LimitReachedResponse) => {
       if ('limitReached' in data) {
         setLimitReached(true);
+        if (data.showPremiumOffer) {
+          setShowPremiumOffer(true);
+        }
         toast({
           title: "Daily Limit Reached",
           description: data.message,
@@ -137,6 +142,11 @@ export default function Home() {
           title: "Ad Watched!",
           description: "You earned extra cocktail suggestions for today.",
         });
+        
+        // Show premium offer after watching rewarded ad
+        setTimeout(() => {
+          setShowPremiumOffer(true);
+        }, 2000);
       } else {
         toast({
           title: "Ad Not Completed",
@@ -152,6 +162,11 @@ export default function Home() {
         title: "Ad Watched!",
         description: "You can now make one more cocktail request today.",
       });
+      
+      // Show premium offer after watching rewarded ad (fallback)
+      setTimeout(() => {
+        setShowPremiumOffer(true);
+      }, 2000);
     }
   };
 
@@ -460,6 +475,13 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Premium Offer Modal */}
+      <PremiumOfferModal
+        isOpen={showPremiumOffer}
+        onClose={() => setShowPremiumOffer(false)}
+        userId={userId}
+      />
     </div>
   );
 }

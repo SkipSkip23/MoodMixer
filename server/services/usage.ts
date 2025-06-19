@@ -7,6 +7,7 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
   canMakeRequest: boolean;
   limitReached?: boolean;
   message?: string;
+  showPremiumOffer?: boolean;
 }> {
   try {
     let userUsage = await storage.getUserUsage(uid);
@@ -18,9 +19,17 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
         uid,
         requestCount: 0,
         lastReset: today,
-        watchedAd: false
+        watchedAd: false,
+        isPremium: false,
+        premiumExpiry: null,
+        showPremiumOffer: false
       };
       userUsage = await storage.createUserUsage(newUsage);
+    }
+    
+    // Check if premium subscription is active
+    if (userUsage.isPremium && userUsage.premiumExpiry && new Date() < userUsage.premiumExpiry) {
+      return { canMakeRequest: true }; // Premium users have unlimited access
     }
     
     // Check if we need to reset the counter (new day)
@@ -41,9 +50,17 @@ export async function checkUsageLimit(uid: string, watchedAd: boolean = false): 
         return { canMakeRequest: true };
       }
       
+      // Show premium offer only after user has watched a rewarded ad
+      const showPremiumOffer = userUsage.watchedAd && !userUsage.showPremiumOffer;
+      
+      if (showPremiumOffer) {
+        await storage.updateUserUsage(uid, { showPremiumOffer: true });
+      }
+      
       return {
         canMakeRequest: false,
         limitReached: true,
+        showPremiumOffer,
         message: "You've hit your 3-drink limit for today. Watch an ad to unlock more!"
       };
     }

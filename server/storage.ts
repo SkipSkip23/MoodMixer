@@ -53,7 +53,10 @@ export class MemStorage implements IStorage {
       uid: insertUsage.uid,
       requestCount: insertUsage.requestCount ?? 0,
       lastReset: insertUsage.lastReset,
-      watchedAd: insertUsage.watchedAd ?? false
+      watchedAd: insertUsage.watchedAd ?? false,
+      isPremium: insertUsage.isPremium ?? false,
+      premiumExpiry: insertUsage.premiumExpiry ?? null,
+      showPremiumOffer: insertUsage.showPremiumOffer ?? false
     };
     this.userUsages.set(insertUsage.uid, usage);
     return usage;

@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -23,6 +23,9 @@ export const userUsage = pgTable("user_usage", {
   requestCount: integer("request_count").notNull().default(0),
   lastReset: text("last_reset").notNull(), // ISO date string
   watchedAd: boolean("watched_ad").notNull().default(false),
+  isPremium: boolean("is_premium").notNull().default(false),
+  premiumExpiry: timestamp("premium_expiry"),
+  showPremiumOffer: boolean("show_premium_offer").notNull().default(false),
 });
 
 export const insertUserUsageSchema = createInsertSchema(userUsage).omit({
@@ -38,6 +41,11 @@ export const cocktailSuggestionSchema = z.object({
   liquor: z.string().min(1, "Please select a liquor type"),
   uid: z.string().min(1, "User ID required"),
   watchedAd: z.boolean().optional().default(false),
+});
+
+export const premiumUpgradeSchema = z.object({
+  uid: z.string().min(1, "User ID required"),
+  paymentMethod: z.enum(['mock', 'stripe']).default('mock'),
 });
 
 export const affiliateLinkSchema = z.object({
@@ -58,6 +66,7 @@ export const cocktailResponseSchema = z.object({
 export const limitReachedResponseSchema = z.object({
   limitReached: z.literal(true),
   message: z.string(),
+  showPremiumOffer: z.boolean().optional(),
 });
 
 export type CocktailSuggestion = z.infer<typeof cocktailSuggestionSchema>;

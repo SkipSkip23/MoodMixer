@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
-import { cocktailSuggestionSchema, type CocktailResponse } from "@shared/schema";
+import { cocktailSuggestionSchema, premiumUpgradeSchema, type CocktailResponse } from "@shared/schema";
 import { getCocktailSuggestion } from "./services/openai";
 import { checkUsageLimit, incrementUsageCount } from "./services/usage";
 import { generateAffiliateLinks } from "./services/affiliate";
@@ -30,7 +30,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (!usageCheck.canMakeRequest) {
         return res.json({
           limitReached: true,
-          message: usageCheck.message
+          message: usageCheck.message,
+          showPremiumOffer: usageCheck.showPremiumOffer
         });
       }
       
@@ -101,6 +102,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
       playStore: playStoreLink,
       fallback: fallback
     });
+  });
+
+  // Premium subscription endpoint
+  app.post("/api/upgrade-premium", async (req, res) => {
+    try {
+      const validatedData = premiumUpgradeSchema.parse(req.body);
+      const { uid, paymentMethod } = validatedData;
+
+      // For now, we'll simulate a successful payment
+      // Later this can be replaced with actual Stripe integration
+      if (paymentMethod === 'mock') {
+        // Set premium status for 1 year
+        const premiumExpiry = new Date();
+        premiumExpiry.setFullYear(premiumExpiry.getFullYear() + 1);
+
+        await storage.updateUserUsage(uid, {
+          isPremium: true,
+          premiumExpiry: premiumExpiry,
+          showPremiumOffer: false
+        });
+
+        res.json({
+          success: true,
+          message: "Premium subscription activated! Enjoy unlimited cocktail suggestions.",
+          premiumExpiry: premiumExpiry.toISOString()
+        });
+      } else {
+        res.status(400).json({
+          error: "Stripe integration not yet configured. Please try again later."
+        });
+      }
+    } catch (error) {
+      console.error("Premium upgrade error:", error);
+      res.status(500).json({
+        error: "Failed to process premium upgrade. Please try again."
+      });
+    }
   });
 
   const httpServer = createServer(app);
