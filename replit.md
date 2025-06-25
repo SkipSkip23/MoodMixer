@@ -119,6 +119,7 @@ Changelog:
 - June 25, 2025. Configured real AdMob integration with production App ID (ca-app-pub-9239950445744298~6096572015) and iOS banner ad unit for live revenue generation. Disabled test mode for actual earnings.
 - June 25, 2025. Added iOS rewarded video ad unit (ca-app-pub-9239950445744298/1776834647) for high-value ad revenue. Rewarded ads integrated with graduated bonus system for maximum user engagement and earnings.
 - June 25, 2025. Completed iOS interstitial ad unit (ca-app-pub-9239950445744298/9952221024) for full-screen ad revenue. All three iOS ad types now configured for maximum monetization potential.
+- June 25, 2025. Added Android banner ad unit (ca-app-pub-9239950445744298/1924174303) and Android App ID (ca-app-pub-9239950445744298~3501190093) for cross-platform banner ad revenue.
 
 ## User Preferences
 

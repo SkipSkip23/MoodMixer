@@ -16,7 +16,10 @@ const config: CapacitorConfig = {
       showSpinner: false
     },
     AdMob: {
-      appId: 'ca-app-pub-9239950445744298~6096572015', // Your real AdMob App ID
+      appId: {
+        ios: 'ca-app-pub-9239950445744298~6096572015', // Your iOS AdMob App ID
+        android: 'ca-app-pub-9239950445744298~3501190093' // Your Android AdMob App ID
+      },
       requestTrackingAuthorization: true,
       testingDevices: [] // Empty for production
     }
