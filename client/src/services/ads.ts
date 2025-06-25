@@ -6,7 +6,7 @@ const AD_CONFIG = {
   // Test IDs - replace with real ones from Google AdMob
   banner: {
     android: 'ca-app-pub-3940256099942544/6300978111', // Test banner ID - replace with real Android ID
-    ios: 'ca-app-pub-1234567890123456/9876543210' // Your real iOS banner ID from AdMob
+    ios: 'ca-app-pub-9239950445744298/3578384369' // Your real iOS banner ID from AdMob
   },
   interstitial: {
     android: 'ca-app-pub-3940256099942544/1033173712', // Test interstitial ID
@@ -35,8 +35,8 @@ class AdService {
 
     try {
       await AdMob.initialize({
-        testingDevices: ['YOUR_TESTING_DEVICE_ID'], // Add your test device ID
-        initializeForTesting: true, // Remove in production
+        testingDevices: [], // Empty for production
+        initializeForTesting: false, // Production mode for real revenue
       });
       this.isInitialized = true;
       console.log('AdMob initialized successfully');
@@ -57,7 +57,7 @@ class AdService {
         adSize: BannerAdSize.BANNER,
         position: BannerAdPosition.BOTTOM_CENTER,
         margin: 0,
-        isTesting: true // Remove in production
+        isTesting: false // Production mode for real revenue
       };
 
       await AdMob.showBanner(options);
@@ -87,7 +87,7 @@ class AdService {
 
       const options = {
         adId,
-        isTesting: true // Remove in production
+        isTesting: false // Production mode for real revenue
       };
 
       await AdMob.prepareInterstitial(options);
@@ -109,7 +109,7 @@ class AdService {
 
       const options: RewardAdOptions = {
         adId,
-        isTesting: true // Remove in production
+        isTesting: false // Production mode for real revenue
       };
 
       await AdMob.prepareRewardVideoAd(options);

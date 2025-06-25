@@ -16,9 +16,9 @@ const config: CapacitorConfig = {
       showSpinner: false
     },
     AdMob: {
-      appId: 'ca-app-pub-3940256099942544~3347511713', // Replace with your actual App ID
+      appId: 'ca-app-pub-9239950445744298~6096572015', // Your real AdMob App ID
       requestTrackingAuthorization: true,
-      testingDevices: ['YOUR_TESTING_DEVICE_ID']
+      testingDevices: [] // Empty for production
     }
   }
 };
