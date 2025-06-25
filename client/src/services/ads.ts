@@ -13,7 +13,7 @@ const AD_CONFIG = {
     ios: 'ca-app-pub-9239950445744298/9952221024' // Your real iOS interstitial ad ID from AdMob
   },
   rewarded: {
-    android: 'ca-app-pub-3940256099942544/5224354917', // Test rewarded ID - replace with real Android ID
+    android: 'ca-app-pub-9239950445744298/5080820681', // Your real Android rewarded ad ID from AdMob
     ios: 'ca-app-pub-9239950445744298/1776834647' // Your real iOS rewarded ad ID from AdMob
   }
 };

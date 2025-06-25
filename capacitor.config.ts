@@ -18,7 +18,7 @@ const config: CapacitorConfig = {
     AdMob: {
       appId: {
         ios: 'ca-app-pub-9239950445744298~6096572015', // Your iOS AdMob App ID
-        android: 'ca-app-pub-9239950445744298~3501190093' // Your Android AdMob App ID
+        android: 'ca-app-pub-9239950445744298~3501798093' // Your Android AdMob App ID
       },
       requestTrackingAuthorization: true,
       testingDevices: [] // Empty for production
