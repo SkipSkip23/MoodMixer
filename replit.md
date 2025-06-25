@@ -117,6 +117,8 @@ Changelog:
 - June 19, 2025. Implemented graduated ad bonus system: Base 3 requests + 2 more after 1st ad + 1 more after 2nd ad. Premium upgrade offers shown at every limit stage for maximum conversion.
 - June 19, 2025. Added "Mixly After Dark" mode with provocative cocktail names and special purple/pink styling for adult-themed content. Direct access without age verification.
 - June 25, 2025. Configured real AdMob integration with production App ID (ca-app-pub-9239950445744298~6096572015) and iOS banner ad unit for live revenue generation. Disabled test mode for actual earnings.
+- June 25, 2025. Added iOS rewarded video ad unit (ca-app-pub-9239950445744298/1776834647) for high-value ad revenue. Rewarded ads integrated with graduated bonus system for maximum user engagement and earnings.
+- June 25, 2025. Completed iOS interstitial ad unit (ca-app-pub-9239950445744298/9952221024) for full-screen ad revenue. All three iOS ad types now configured for maximum monetization potential.
 
 ## User Preferences
 

@@ -9,12 +9,12 @@ const AD_CONFIG = {
     ios: 'ca-app-pub-9239950445744298/3578384369' // Your real iOS banner ID from AdMob
   },
   interstitial: {
-    android: 'ca-app-pub-3940256099942544/1033173712', // Test interstitial ID
-    ios: 'ca-app-pub-3940256099942544/4411468910' // Test interstitial ID
+    android: 'ca-app-pub-3940256099942544/1033173712', // Test interstitial ID - replace with real Android ID
+    ios: 'ca-app-pub-9239950445744298/9952221024' // Your real iOS interstitial ad ID from AdMob
   },
   rewarded: {
-    android: 'ca-app-pub-3940256099942544/5224354917', // Test rewarded ID
-    ios: 'ca-app-pub-3940256099942544/1712485313' // Test rewarded ID
+    android: 'ca-app-pub-3940256099942544/5224354917', // Test rewarded ID - replace with real Android ID
+    ios: 'ca-app-pub-9239950445744298/1776834647' // Your real iOS rewarded ad ID from AdMob
   }
 };
 
@@ -115,7 +115,7 @@ class AdService {
       await AdMob.prepareRewardVideoAd(options);
       const result = await AdMob.showRewardVideoAd();
       
-      if (result && result.reward) {
+      if (result) {
         console.log('User earned reward:', result);
         return true;
       }
