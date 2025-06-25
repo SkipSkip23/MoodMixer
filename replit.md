@@ -121,6 +121,7 @@ Changelog:
 - June 25, 2025. Completed iOS interstitial ad unit (ca-app-pub-9239950445744298/9952221024) for full-screen ad revenue. All three iOS ad types now configured for maximum monetization potential.
 - June 25, 2025. Added Android banner ad unit (ca-app-pub-9239950445744298/1924174303) and Android App ID (ca-app-pub-9239950445744298~3501190093) for cross-platform banner ad revenue.
 - June 25, 2025. Completed Android rewarded video ad unit (ca-app-pub-9239950445744298/5080820681) for cross-platform high-value ad revenue. Updated Android App ID to ca-app-pub-9239950445744298~3501798093.
+- June 25, 2025. Finalized Android interstitial ad unit (ca-app-pub-9239950445744298/0298010960) completing full cross-platform ad monetization. All revenue streams now active for both iOS and Android platforms.
 
 ## User Preferences
 
