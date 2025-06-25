@@ -5,8 +5,8 @@ import { Capacitor } from '@capacitor/core';
 const AD_CONFIG = {
   // Test IDs - replace with real ones from Google AdMob
   banner: {
-    android: 'ca-app-pub-3940256099942544/6300978111', // Test banner ID
-    ios: 'ca-app-pub-3940256099942544/2934735716' // Test banner ID
+    android: 'ca-app-pub-3940256099942544/6300978111', // Test banner ID - replace with real Android ID
+    ios: 'ca-app-pub-1234567890123456/9876543210' // Your real iOS banner ID from AdMob
   },
   interstitial: {
     android: 'ca-app-pub-3940256099942544/1033173712', // Test interstitial ID
